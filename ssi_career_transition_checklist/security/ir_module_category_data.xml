@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2024 OpenSynergy Indonesia
+     Copyright 2024 PT. Simetri Sinergi Indonesia
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). -->
+<odoo>
+    <!-- Workflow -->
+    <record
+        id="career_transition_checklist_workflow_module_category"
+        model="ir.module.category"
+    >
+        <field name="name">Career Transition Checklist - Workflow</field>
+        <field name="parent_id" ref="ssi_hr.human_resource_module_category" />
+    </record>
+
+    <!-- Configurator -->
+    <record
+        id="career_transition_checklist_configurator_module_category"
+        model="ir.module.category"
+    >
+        <field name="name">Career Transition Checklist - Configurator</field>
+        <field
+            name="parent_id"
+            ref="ssi_hr.human_resource_configurator_module_category"
+        />
+    </record>
+
+    <!-- Data Ownership -->
+    <record
+        id="career_transition_checklist_data_ownership_module_category"
+        model="ir.module.category"
+    >
+        <field name="name">Career Transition Checklist - Data Ownership</field>
+        <field name="parent_id" ref="ssi_hr.human_resource_data_module_category" />
+    </record>
+</odoo>
