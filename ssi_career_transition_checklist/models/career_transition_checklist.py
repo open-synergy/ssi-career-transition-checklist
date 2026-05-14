@@ -85,6 +85,7 @@ class CareerTransitionChecklist(models.Model):
     type_id = fields.Many2one(
         string="Type",
         comodel_name="career_transition_checklist_type",
+        required=True,
         ondelete="restrict",
         readonly=True,
         states={"draft": [("readonly", False)]},

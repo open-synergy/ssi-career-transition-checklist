@@ -192,6 +192,14 @@ scenarios:
           employee_id: "EVAL: registry['employee'].id"
           type_id: "EVAL: registry['transition_type'].id"
 
+      - step: "Setup - create checklist type (block)"
+        action: "create"
+        model: "career_transition_checklist_type"
+        save_as: "checklist_type_block"
+        values:
+          name: "Block Checklist Type"
+          code: "CTCBLOCK"
+
       - step: "Create career transition checklist"
         action: "create"
         model: "career_transition_checklist"
@@ -200,6 +208,7 @@ scenarios:
         values:
           employee_id: "EVAL: registry['employee'].id"
           career_transition_id: "EVAL: registry['career_transition'].id"
+          type_id: "EVAL: registry['checklist_type_block'].id"
 
       - step: "Confirm checklist"
         action: "call"
