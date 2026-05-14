@@ -36,9 +36,9 @@ class CareerTransitionChecklistItem(models.Model):
     )
     type_id = fields.Many2one(
         string="Type",
-        comodel_name="career_transition_checklist_type.item",
+        comodel_name="career_transition_checklist_type",
         ondelete="restrict",
-        help="Optional reference to the checklist type item template.",
+        help="Optional reference to the checklist type.",
     )
     name = fields.Char(
         string="Name",
@@ -94,23 +94,6 @@ class CareerTransitionChecklistItem(models.Model):
         self.name = False
         if self.type_id:
             self.name = self.type_id.name
-
-    @api.onchange("type_id")
-    def onchange_checklist_method(self):
-        self.checklist_method = "manual"
-        if self.type_id:
-            self.checklist_method = self.type_id.checklist_method
-
-    @api.onchange("type_id")
-    def onchange_python_code(self):
-        self.python_code = False
-        if self.type_id:
-            self.python_code = self.type_id.python_code
-
-    @api.onchange("type_id")
-    def onchange_sequence(self):
-        if self.type_id:
-            self.sequence = self.type_id.sequence
 
     def _get_localdict(self):
         self.ensure_one()

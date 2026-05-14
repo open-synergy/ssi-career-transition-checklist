@@ -168,10 +168,10 @@ Solution: Complete all checklist items before marking as done."""
             ("career_transition_type_ids", "in", [transition_type.id]),
         ]
 
-    def _prepare_checklist_item_vals(self, type_item):
+    def _prepare_checklist_item_vals(self, checklist_type, type_item):
         return {
             "checklist_id": self.id,
-            "type_id": type_item.id,
+            "type_id": checklist_type.id,
             "name": type_item.name,
             "checklist_method": type_item.checklist_method,
             "python_code": type_item.python_code,
@@ -186,14 +186,16 @@ Solution: Complete all checklist items before marking as done."""
         transition_type = self.career_transition_id.type_id
         criteria = self._get_checklist_type_criteria(transition_type)
         types = obj_type.search(criteria)
-        existing_type_item_ids = (
+        existing_type_ids = (
             self.checklist_item_ids.filtered(lambda i: i.type_id).mapped("type_id").ids
         )
         obj_item = self.env["career_transition_checklist.item"]
         for checklist_type in types:
-            for type_item in checklist_type.checklist_item_ids:
-                if type_item.id not in existing_type_item_ids:
-                    obj_item.create(self._prepare_checklist_item_vals(type_item))
+            if checklist_type.id not in existing_type_ids:
+                for type_item in checklist_type.checklist_item_ids:
+                    obj_item.create(
+                        self._prepare_checklist_item_vals(checklist_type, type_item)
+                    )
 
     @ssi_decorator.insert_on_form_view()
     def _insert_form_element(self, view_arch):
