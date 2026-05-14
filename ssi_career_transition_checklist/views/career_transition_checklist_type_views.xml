@@ -3,10 +3,7 @@
      Copyright 2024 PT. Simetri Sinergi Indonesia
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). -->
 <odoo>
-    <record
-        id="career_transition_checklist_type_view_search"
-        model="ir.ui.view"
-    >
+    <record id="career_transition_checklist_type_view_search" model="ir.ui.view">
         <field name="name">career_transition_checklist_type - search</field>
         <field name="model">career_transition_checklist_type</field>
         <field
@@ -19,10 +16,7 @@
         </field>
     </record>
 
-    <record
-        id="career_transition_checklist_type_view_tree"
-        model="ir.ui.view"
-    >
+    <record id="career_transition_checklist_type_view_tree" model="ir.ui.view">
         <field name="name">career_transition_checklist_type - tree</field>
         <field name="model">career_transition_checklist_type</field>
         <field
@@ -35,10 +29,7 @@
         </field>
     </record>
 
-    <record
-        id="career_transition_checklist_type_view_form"
-        model="ir.ui.view"
-    >
+    <record id="career_transition_checklist_type_view_form" model="ir.ui.view">
         <field name="name">career_transition_checklist_type - form</field>
         <field name="model">career_transition_checklist_type</field>
         <field
@@ -67,10 +58,7 @@
                 </xpath>
                 <xpath expr="//notebook/page[@name='note']" position="before">
                     <page name="checklist_items" string="Checklist Items">
-                        <field
-                            name="checklist_item_ids"
-                            nolabel="1"
-                        >
+                        <field name="checklist_item_ids" nolabel="1">
                             <tree editable="bottom">
                                 <field name="sequence" widget="handle" />
                                 <field name="name" />
@@ -98,10 +86,7 @@
         </field>
     </record>
 
-    <record
-        id="career_transition_checklist_type_action"
-        model="ir.actions.act_window"
-    >
+    <record id="career_transition_checklist_type_action" model="ir.actions.act_window">
         <field name="name">Career Transition Checklist Types</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">career_transition_checklist_type</field>

@@ -1,5 +1,6 @@
 scenarios:
-  - name: "Career Transition Checklist - Full Workflow: draft to done with manual checklist"
+  - name:
+      "Career Transition Checklist - Full Workflow: draft to done with manual checklist"
     steps:
       - step: "Setup - create employee job position"
         action: "create"

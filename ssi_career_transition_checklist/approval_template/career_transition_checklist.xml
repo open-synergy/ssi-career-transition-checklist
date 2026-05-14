@@ -18,10 +18,7 @@
         id="career_transition_checklist_approval_template_detail"
         model="approval.template_detail"
     >
-        <field
-            name="template_id"
-            ref="career_transition_checklist_approval_template"
-        />
+        <field name="template_id" ref="career_transition_checklist_approval_template" />
         <field name="approver_selection_method">use_group</field>
         <field
             name="approver_group_ids"

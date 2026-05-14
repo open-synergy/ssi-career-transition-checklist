@@ -4,10 +4,7 @@
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). -->
 <odoo>
     <!-- career_transition_checklist -->
-    <record
-        id="career_transition_checklist_all_access"
-        model="ir.model.access"
-    >
+    <record id="career_transition_checklist_all_access" model="ir.model.access">
         <field name="name">career_transition_checklist - all</field>
         <field name="model_id" ref="model_career_transition_checklist" />
         <field name="perm_read" eval="1" />
@@ -16,10 +13,7 @@
         <field name="perm_unlink" eval="0" />
     </record>
 
-    <record
-        id="career_transition_checklist_user_access"
-        model="ir.model.access"
-    >
+    <record id="career_transition_checklist_user_access" model="ir.model.access">
         <field name="name">career_transition_checklist - user</field>
         <field name="model_id" ref="model_career_transition_checklist" />
         <field name="group_id" ref="career_transition_checklist_user_group" />
@@ -30,10 +24,7 @@
     </record>
 
     <!-- career_transition_checklist.item (child model) -->
-    <record
-        id="career_transition_checklist_item_all_access"
-        model="ir.model.access"
-    >
+    <record id="career_transition_checklist_item_all_access" model="ir.model.access">
         <field name="name">career_transition_checklist.item - all</field>
         <field name="model_id" ref="model_career_transition_checklist_item" />
         <field name="perm_read" eval="1" />
@@ -42,10 +33,7 @@
         <field name="perm_unlink" eval="0" />
     </record>
 
-    <record
-        id="career_transition_checklist_item_user_access"
-        model="ir.model.access"
-    >
+    <record id="career_transition_checklist_item_user_access" model="ir.model.access">
         <field name="name">career_transition_checklist.item - user</field>
         <field name="model_id" ref="model_career_transition_checklist_item" />
         <field name="group_id" ref="career_transition_checklist_user_group" />

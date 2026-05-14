@@ -3,10 +3,7 @@
      Copyright 2024 PT. Simetri Sinergi Indonesia
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). -->
 <odoo noupdate="1">
-    <record
-        id="career_transition_checklist_policy_template"
-        model="policy.template"
-    >
+    <record id="career_transition_checklist_policy_template" model="policy.template">
         <field name="name">Standard</field>
         <field name="model_id" ref="model_career_transition_checklist" />
         <field
@@ -22,10 +19,7 @@
         id="career_transition_checklist_policy_template_detail_confirm"
         model="policy.template_detail"
     >
-        <field
-            name="template_id"
-            ref="career_transition_checklist_policy_template"
-        />
+        <field name="template_id" ref="career_transition_checklist_policy_template" />
         <field
             name="field_id"
             search="[('model_id.model','=','career_transition_checklist'),('name','=','confirm_ok')]"
@@ -49,10 +43,7 @@
         id="career_transition_checklist_policy_template_detail_approve"
         model="policy.template_detail"
     >
-        <field
-            name="template_id"
-            ref="career_transition_checklist_policy_template"
-        />
+        <field name="template_id" ref="career_transition_checklist_policy_template" />
         <field
             name="field_id"
             search="[('model_id.model','=','career_transition_checklist'),('name','=','approve_ok')]"
@@ -74,10 +65,7 @@ if env.user.id in document.active_approver_user_ids.ids:
         id="career_transition_checklist_policy_template_detail_reject"
         model="policy.template_detail"
     >
-        <field
-            name="template_id"
-            ref="career_transition_checklist_policy_template"
-        />
+        <field name="template_id" ref="career_transition_checklist_policy_template" />
         <field
             name="field_id"
             search="[('model_id.model','=','career_transition_checklist'),('name','=','reject_ok')]"
@@ -99,10 +87,7 @@ if env.user.id in document.active_approver_user_ids.ids:
         id="career_transition_checklist_policy_template_detail_restart_approval"
         model="policy.template_detail"
     >
-        <field
-            name="template_id"
-            ref="career_transition_checklist_policy_template"
-        />
+        <field name="template_id" ref="career_transition_checklist_policy_template" />
         <field
             name="field_id"
             search="[('model_id.model','=','career_transition_checklist'),('name','=','restart_approval_ok')]"
@@ -129,10 +114,7 @@ if not document.approval_template_id:
         id="career_transition_checklist_policy_template_detail_done"
         model="policy.template_detail"
     >
-        <field
-            name="template_id"
-            ref="career_transition_checklist_policy_template"
-        />
+        <field name="template_id" ref="career_transition_checklist_policy_template" />
         <field
             name="field_id"
             search="[('model_id.model','=','career_transition_checklist'),('name','=','done_ok')]"
@@ -156,10 +138,7 @@ if not document.approval_template_id:
         id="career_transition_checklist_policy_template_detail_cancel"
         model="policy.template_detail"
     >
-        <field
-            name="template_id"
-            ref="career_transition_checklist_policy_template"
-        />
+        <field name="template_id" ref="career_transition_checklist_policy_template" />
         <field
             name="field_id"
             search="[('model_id.model','=','career_transition_checklist'),('name','=','cancel_ok')]"
@@ -183,10 +162,7 @@ if not document.approval_template_id:
         id="career_transition_checklist_policy_template_detail_restart"
         model="policy.template_detail"
     >
-        <field
-            name="template_id"
-            ref="career_transition_checklist_policy_template"
-        />
+        <field name="template_id" ref="career_transition_checklist_policy_template" />
         <field
             name="field_id"
             search="[('model_id.model','=','career_transition_checklist'),('name','=','restart_ok')]"
@@ -210,10 +186,7 @@ if not document.approval_template_id:
         id="career_transition_checklist_policy_template_detail_manual_number"
         model="policy.template_detail"
     >
-        <field
-            name="template_id"
-            ref="career_transition_checklist_policy_template"
-        />
+        <field name="template_id" ref="career_transition_checklist_policy_template" />
         <field
             name="field_id"
             search="[('model_id.model','=','career_transition_checklist'),('name','=','manual_number_ok')]"

@@ -187,9 +187,7 @@ Solution: Complete all checklist items before marking as done."""
         criteria = self._get_checklist_type_criteria(transition_type)
         types = obj_type.search(criteria)
         existing_type_item_ids = (
-            self.checklist_item_ids.filtered(lambda i: i.type_id)
-            .mapped("type_id")
-            .ids
+            self.checklist_item_ids.filtered(lambda i: i.type_id).mapped("type_id").ids
         )
         obj_item = self.env["career_transition_checklist.item"]
         for checklist_type in types:

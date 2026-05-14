@@ -50,9 +50,7 @@ class CareerTransitionChecklistType(models.Model):
         return [("model", "=", self._name)]
 
     def _prepare_cron_vals(self, cron_model):
-        cron_code = (
-            "env['%s'].browse(%d)._run_cron_evaluate()" % (self._name, self.id)
-        )
+        cron_code = "env['%s'].browse(%d)._run_cron_evaluate()" % (self._name, self.id)
         return {
             "name": "Checklist Evaluate: %s" % self.name,
             "model_id": cron_model.id,
@@ -76,9 +74,7 @@ class CareerTransitionChecklistType(models.Model):
         cron_model = self.env["ir.model"].search(
             self._get_cron_model_criteria(), limit=1
         )
-        cron = self.env["ir.cron"].sudo().create(
-            self._prepare_cron_vals(cron_model)
-        )
+        cron = self.env["ir.cron"].sudo().create(self._prepare_cron_vals(cron_model))
         self.cron_id = cron.id
 
     def action_delete_cron(self):
