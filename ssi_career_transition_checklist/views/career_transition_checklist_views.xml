@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2024 OpenSynergy Indonesia
+     Copyright 2024 PT. Simetri Sinergi Indonesia
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). -->
+<odoo>
+    <record id="career_transition_checklist_view_search" model="ir.ui.view">
+        <field name="name">career_transition_checklist - search</field>
+        <field name="model">career_transition_checklist</field>
+        <field
+            name="inherit_id"
+            ref="ssi_transaction_mixin.mixin_transaction_view_search"
+        />
+        <field name="mode">primary</field>
+        <field name="arch" type="xml">
+            <data>
+                <xpath expr="//field[@name='name']" position="after">
+                    <field name="employee_id" />
+                    <field name="career_transition_id" />
+                </xpath>
+                <xpath expr="//group[@name='group_by']" position="inside">
+                    <filter
+                        name="grp_employee"
+                        string="Employee"
+                        context="{'group_by':'employee_id'}"
+                    />
+                    <filter
+                        name="grp_career_transition"
+                        string="Career Transition"
+                        context="{'group_by':'career_transition_id'}"
+                    />
+                </xpath>
+            </data>
+        </field>
+    </record>
+
+    <record id="career_transition_checklist_view_tree" model="ir.ui.view">
+        <field name="name">career_transition_checklist - tree</field>
+        <field name="model">career_transition_checklist</field>
+        <field name="mode">primary</field>
+        <field
+            name="inherit_id"
+            ref="ssi_transaction_mixin.mixin_transaction_view_tree"
+        />
+        <field name="arch" type="xml">
+            <data>
+                <xpath expr="//field[@name='display_name']" position="after">
+                    <field name="employee_id" />
+                    <field name="department_id" optional="hide" />
+                    <field name="career_transition_id" />
+                    <field name="all_items_done" />
+                </xpath>
+            </data>
+        </field>
+    </record>
+
+    <record id="career_transition_checklist_view_form" model="ir.ui.view">
+        <field name="name">career_transition_checklist - form</field>
+        <field name="model">career_transition_checklist</field>
+        <field name="mode">primary</field>
+        <field
+            name="inherit_id"
+            ref="ssi_transaction_mixin.mixin_transaction_view_form"
+        />
+        <field name="arch" type="xml">
+            <data>
+                <xpath expr="//group[@name='header_left']" position="inside">
+                    <field name="employee_id" />
+                    <field name="department_id" />
+                    <field name="manager_id" />
+                    <field name="job_id" />
+                </xpath>
+                <xpath expr="//group[@name='header_right']" position="inside">
+                    <field
+                        name="career_transition_id"
+                        options='{"no_open": False, "no_create": True}'
+                    />
+                    <field name="all_items_done" />
+                </xpath>
+                <xpath expr="//notebook/page[@name='note']" position="before">
+                    <page name="checklist_items" string="Checklist Items">
+                        <group name="checklist_items_buttons" colspan="4" col="2">
+                            <button
+                                name="action_load_checklist"
+                                string="Load Checklist Items from Types"
+                                type="object"
+                                class="oe_highlight"
+                                icon="fa-refresh"
+                                attrs="{'invisible':[('state','not in',['draft','open'])]}"
+                            />
+                        </group>
+                        <field name="checklist_item_ids" nolabel="1" colspan="4">
+                            <tree editable="bottom">
+                                <field name="sequence" widget="handle" />
+                                <field name="type_id" optional="show" />
+                                <field name="name" />
+                                <field name="checklist_method" />
+                                <field
+                                    name="is_done"
+                                    attrs="{'column_invisible':[('parent.state','not in',['open'])]}"
+                                />
+                                <field name="status_ok" />
+                                <field name="note" optional="hide" />
+                            </tree>
+                            <form>
+                                <group name="item_main" colspan="4" col="2">
+                                    <group name="item_main_1" colspan="1" col="2">
+                                        <field name="sequence" />
+                                        <field name="type_id" />
+                                        <field name="name" />
+                                        <field name="checklist_method" />
+                                        <field name="is_done" />
+                                        <field name="status_ok" />
+                                    </group>
+                                    <group name="item_main_2" colspan="1" col="2">
+                                        <field name="note" />
+                                    </group>
+                                </group>
+                                <group
+                                    name="item_code"
+                                    colspan="4"
+                                    col="1"
+                                    attrs="{'invisible':[('checklist_method','!=','automatic')]}"
+                                >
+                                    <field
+                                        name="python_code"
+                                        nolabel="1"
+                                        colspan="4"
+                                        widget="ace"
+                                        options="{'mode': 'python'}"
+                                    />
+                                </group>
+                            </form>
+                        </field>
+                    </page>
+                </xpath>
+            </data>
+        </field>
+    </record>
+
+    <record id="career_transition_checklist_action" model="ir.actions.act_window">
+        <field name="name">Career Transition Checklists</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">career_transition_checklist</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem
+        id="career_transition_checklist_menu"
+        name="Career Transition Checklists"
+        parent="ssi_hr.hr_career_management_menu"
+        action="career_transition_checklist_action"
+        groups="career_transition_checklist_viewer_group"
+        sequence="30"
+    />
+</odoo>
