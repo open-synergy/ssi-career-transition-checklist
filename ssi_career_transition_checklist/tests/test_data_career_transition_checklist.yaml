@@ -1,0 +1,304 @@
+scenarios:
+  - name: "Career Transition Checklist - Full Workflow: draft to done with manual checklist"
+    steps:
+      - step: "Setup - create employee job position"
+        action: "create"
+        model: "hr.job"
+        save_as: "job"
+        values:
+          name: "Test Job CTC"
+
+      - step: "Setup - create employee department"
+        action: "create"
+        model: "hr.department"
+        save_as: "department"
+        values:
+          name: "Test Department CTC"
+
+      - step: "Setup - create employee"
+        action: "create"
+        model: "hr.employee"
+        save_as: "employee"
+        values:
+          name: "Test Employee CTC"
+          job_id: "EVAL: registry['job'].id"
+          department_id: "EVAL: registry['department'].id"
+
+      - step: "Setup - create career transition type"
+        action: "create"
+        model: "employee_career_transition_type"
+        save_as: "transition_type"
+        values:
+          name: "Test Transition Type CTC"
+          code: "TTCTC"
+
+      - step: "Setup - create career transition"
+        action: "create"
+        model: "employee_career_transition"
+        save_as: "career_transition"
+        as_user: "base.user_admin"
+        values:
+          employee_id: "EVAL: registry['employee'].id"
+          type_id: "EVAL: registry['transition_type'].id"
+
+      - step: "Setup - create checklist type (manual)"
+        action: "create"
+        model: "career_transition_checklist_type"
+        save_as: "checklist_type_manual"
+        values:
+          name: "Prepare Welcome Kit"
+          code: "CTC001"
+          career_transition_type_ids:
+            - "EVAL: registry['transition_type'].id"
+
+      - step: "Setup - create checklist type item (manual)"
+        action: "create"
+        model: "career_transition_checklist_type.item"
+        save_as: "checklist_type_item_manual"
+        values:
+          type_id: "EVAL: registry['checklist_type_manual'].id"
+          name: "Prepare Welcome Kit Item"
+          checklist_method: "manual"
+          sequence: 5
+
+      - step: "Create career transition checklist"
+        action: "create"
+        model: "career_transition_checklist"
+        save_as: "checklist"
+        as_user: "base.user_admin"
+        values:
+          employee_id: "EVAL: registry['employee'].id"
+          career_transition_id: "EVAL: registry['career_transition'].id"
+
+      - step: "Assert checklist created in draft"
+        action: "assert"
+        target: "checklist"
+        asserts:
+          state:
+            type: "value"
+            expected: "draft"
+          all_items_done:
+            type: "value"
+            expected: true
+
+      - step: "Confirm checklist"
+        action: "call"
+        target: "checklist"
+        method: "action_confirm"
+        as_user: "base.user_admin"
+        asserts:
+          state:
+            type: "value"
+            expected: "confirm"
+
+      - step: "Invalidate cache after confirm"
+        action: "call"
+        target: "checklist"
+        method: "invalidate_cache"
+
+      - step: "Approve checklist"
+        action: "call"
+        target: "checklist"
+        method: "action_approve_approval"
+        as_user: "base.user_admin"
+        asserts:
+          state:
+            type: "value"
+            expected: "open"
+
+      - step: "Invalidate cache after open"
+        action: "call"
+        target: "checklist"
+        method: "invalidate_cache"
+
+      - step: "Load checklist items from types"
+        action: "call"
+        target: "checklist"
+        method: "action_load_checklist"
+        as_user: "base.user_admin"
+
+      - step: "Assert checklist items loaded"
+        action: "assert"
+        target: "checklist"
+        asserts:
+          all_items_done:
+            type: "value"
+            expected: false
+
+      - step: "Get checklist item"
+        action: "search"
+        model: "career_transition_checklist.item"
+        domain:
+          - ["checklist_id", "=", "EVAL: registry['checklist'].id"]
+        save_as: "checklist_item"
+        limit: 1
+
+      - step: "Mark checklist item as done"
+        action: "write"
+        target: "checklist_item"
+        values:
+          is_done: true
+
+      - step: "Invalidate cache after item done"
+        action: "call"
+        target: "checklist"
+        method: "invalidate_cache"
+
+      - step: "Assert all items done"
+        action: "assert"
+        target: "checklist"
+        asserts:
+          all_items_done:
+            type: "value"
+            expected: true
+
+      - step: "Mark checklist as done"
+        action: "call"
+        target: "checklist"
+        method: "action_done"
+        as_user: "base.user_admin"
+        context:
+          bypass_policy_check: true
+        asserts:
+          state:
+            type: "value"
+            expected: "done"
+
+  - name: "Career Transition Checklist - Cannot done when items not completed"
+    steps:
+      - step: "Setup - create employee"
+        action: "create"
+        model: "hr.employee"
+        save_as: "employee"
+        values:
+          name: "Test Employee CTC Block"
+
+      - step: "Setup - create career transition type"
+        action: "create"
+        model: "employee_career_transition_type"
+        save_as: "transition_type"
+        values:
+          name: "Test Transition Type Block"
+          code: "TTCTCB"
+
+      - step: "Setup - create career transition"
+        action: "create"
+        model: "employee_career_transition"
+        save_as: "career_transition"
+        as_user: "base.user_admin"
+        values:
+          employee_id: "EVAL: registry['employee'].id"
+          type_id: "EVAL: registry['transition_type'].id"
+
+      - step: "Create career transition checklist"
+        action: "create"
+        model: "career_transition_checklist"
+        save_as: "checklist"
+        as_user: "base.user_admin"
+        values:
+          employee_id: "EVAL: registry['employee'].id"
+          career_transition_id: "EVAL: registry['career_transition'].id"
+
+      - step: "Confirm checklist"
+        action: "call"
+        target: "checklist"
+        method: "action_confirm"
+        as_user: "base.user_admin"
+
+      - step: "Invalidate cache after confirm"
+        action: "call"
+        target: "checklist"
+        method: "invalidate_cache"
+
+      - step: "Approve to open"
+        action: "call"
+        target: "checklist"
+        method: "action_approve_approval"
+        as_user: "base.user_admin"
+
+      - step: "Invalidate cache after open"
+        action: "call"
+        target: "checklist"
+        method: "invalidate_cache"
+
+      - step: "Add uncompleted manual checklist item"
+        action: "create"
+        model: "career_transition_checklist.item"
+        save_as: "checklist_item"
+        values:
+          checklist_id: "EVAL: registry['checklist'].id"
+          name: "Incomplete Item"
+          checklist_method: "manual"
+          is_done: false
+          sequence: 5
+
+      - step: "Assert not all items done"
+        action: "assert"
+        target: "checklist"
+        asserts:
+          all_items_done:
+            type: "value"
+            expected: false
+
+  - name: "Career Transition Checklist Type - Create manual and automatic types"
+    steps:
+      - step: "Create manual checklist type"
+        action: "create"
+        model: "career_transition_checklist_type"
+        save_as: "type_manual"
+        values:
+          name: "Issue Access Card"
+          code: "CTTYPE001"
+
+      - step: "Create manual checklist type item"
+        action: "create"
+        model: "career_transition_checklist_type.item"
+        save_as: "type_manual_item"
+        values:
+          type_id: "EVAL: registry['type_manual'].id"
+          name: "Issue Access Card Item"
+          checklist_method: "manual"
+          sequence: 5
+
+      - step: "Assert manual type created"
+        action: "assert"
+        target: "type_manual"
+        asserts:
+          active:
+            type: "value"
+            expected: true
+
+      - step: "Assert manual type item method"
+        action: "assert"
+        target: "type_manual_item"
+        asserts:
+          checklist_method:
+            type: "value"
+            expected: "manual"
+
+      - step: "Create automatic checklist type"
+        action: "create"
+        model: "career_transition_checklist_type"
+        save_as: "type_automatic"
+        values:
+          name: "HR Document Complete"
+          code: "CTTYPE002"
+
+      - step: "Create automatic checklist type item"
+        action: "create"
+        model: "career_transition_checklist_type.item"
+        save_as: "type_automatic_item"
+        values:
+          type_id: "EVAL: registry['type_automatic'].id"
+          name: "HR Document Complete Item"
+          checklist_method: "automatic"
+          python_code: "result = False"
+          sequence: 5
+
+      - step: "Assert automatic type item method"
+        action: "assert"
+        target: "type_automatic_item"
+        asserts:
+          checklist_method:
+            type: "value"
+            expected: "automatic"
