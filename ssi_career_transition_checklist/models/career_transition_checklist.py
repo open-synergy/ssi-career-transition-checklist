@@ -82,6 +82,14 @@ class CareerTransitionChecklist(models.Model):
         states={"draft": [("readonly", False)]},
         help="The career transition document this checklist is associated with.",
     )
+    type_id = fields.Many2one(
+        string="Type",
+        comodel_name="career_transition_checklist_type",
+        ondelete="restrict",
+        readonly=True,
+        states={"draft": [("readonly", False)]},
+        help="Checklist type that defines the template items for this checklist.",
+    )
     checklist_item_ids = fields.One2many(
         string="Checklist Items",
         comodel_name="career_transition_checklist.item",
@@ -168,10 +176,9 @@ Solution: Complete all checklist items before marking as done."""
             ("career_transition_type_ids", "in", [transition_type.id]),
         ]
 
-    def _prepare_checklist_item_vals(self, checklist_type, type_item):
+    def _prepare_checklist_item_vals(self, type_item):
         return {
             "checklist_id": self.id,
-            "type_id": checklist_type.id,
             "name": type_item.name,
             "checklist_method": type_item.checklist_method,
             "python_code": type_item.python_code,
@@ -180,22 +187,13 @@ Solution: Complete all checklist items before marking as done."""
 
     def _load_checklist(self):
         self.ensure_one()
-        if not self.career_transition_id:
+        if not self.type_id:
             return
-        obj_type = self.env["career_transition_checklist_type"]
-        transition_type = self.career_transition_id.type_id
-        criteria = self._get_checklist_type_criteria(transition_type)
-        types = obj_type.search(criteria)
-        existing_type_ids = (
-            self.checklist_item_ids.filtered(lambda i: i.type_id).mapped("type_id").ids
-        )
+        existing_names = self.checklist_item_ids.mapped("name")
         obj_item = self.env["career_transition_checklist.item"]
-        for checklist_type in types:
-            if checklist_type.id not in existing_type_ids:
-                for type_item in checklist_type.checklist_item_ids:
-                    obj_item.create(
-                        self._prepare_checklist_item_vals(checklist_type, type_item)
-                    )
+        for type_item in self.type_id.checklist_item_ids:
+            if type_item.name not in existing_names:
+                obj_item.create(self._prepare_checklist_item_vals(type_item))
 
     @ssi_decorator.insert_on_form_view()
     def _insert_form_element(self, view_arch):

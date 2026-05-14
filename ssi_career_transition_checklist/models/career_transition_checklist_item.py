@@ -34,12 +34,6 @@ class CareerTransitionChecklistItem(models.Model):
         default=5,
         help="Display order of the checklist item.",
     )
-    type_id = fields.Many2one(
-        string="Type",
-        comodel_name="career_transition_checklist_type",
-        ondelete="restrict",
-        help="Optional reference to the checklist type.",
-    )
     name = fields.Char(
         string="Name",
         required=True,
@@ -88,12 +82,6 @@ class CareerTransitionChecklistItem(models.Model):
         store=False,
         help="Whether this checklist item is completed.",
     )
-
-    @api.onchange("type_id")
-    def onchange_name(self):
-        self.name = False
-        if self.type_id:
-            self.name = self.type_id.name
 
     def _get_localdict(self):
         self.ensure_one()

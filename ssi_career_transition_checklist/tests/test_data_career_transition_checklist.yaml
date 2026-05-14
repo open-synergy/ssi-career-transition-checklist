@@ -70,6 +70,7 @@ scenarios:
         values:
           employee_id: "EVAL: registry['employee'].id"
           career_transition_id: "EVAL: registry['career_transition'].id"
+          type_id: "EVAL: registry['checklist_type_manual'].id"
 
       - step: "Assert checklist created in draft"
         action: "assert"

@@ -63,7 +63,7 @@ class CareerTransitionChecklistType(models.Model):
 
     def _get_evaluate_item_criteria(self):
         return [
-            ("type_id", "=", self.id),
+            ("checklist_id.type_id", "=", self.id),
             ("checklist_method", "=", "automatic"),
             ("checklist_id.state", "=", "open"),
             ("is_done", "=", False),
