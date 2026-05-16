@@ -1,0 +1,73 @@
+scenarios:
+  - name: "Career Transition Checklist - Operating Unit: record has operating_unit_id"
+    steps:
+      - step: "Get default operating unit"
+        action: "ref"
+        xml_id: "operating_unit.main_operating_unit"
+        save_as: "ou"
+
+      - step: "Setup - create employee job position"
+        action: "create"
+        model: "hr.job"
+        save_as: "job"
+        values:
+          name: "Test Job CTC OU"
+
+      - step: "Setup - create employee department"
+        action: "create"
+        model: "hr.department"
+        save_as: "department"
+        values:
+          name: "Test Department CTC OU"
+
+      - step: "Setup - create employee"
+        action: "create"
+        model: "hr.employee"
+        save_as: "employee"
+        values:
+          name: "Test Employee CTC OU"
+          job_id: "EVAL: registry['job'].id"
+          department_id: "EVAL: registry['department'].id"
+
+      - step: "Setup - create career transition type"
+        action: "create"
+        model: "employee_career_transition_type"
+        save_as: "transition_type"
+        values:
+          name: "Test Transition Type CTC OU"
+          code: "TTCTCOU"
+
+      - step: "Setup - create career transition"
+        action: "create"
+        model: "employee_career_transition"
+        save_as: "career_transition"
+        as_user: "base.user_admin"
+        values:
+          employee_id: "EVAL: registry['employee'].id"
+          type_id: "EVAL: registry['transition_type'].id"
+
+      - step: "Setup - create checklist type"
+        action: "create"
+        model: "career_transition_checklist_type"
+        save_as: "checklist_type"
+        values:
+          name: "Test Checklist Type OU"
+          code: "TCTOU"
+
+      - step: "Create checklist with operating_unit_id"
+        action: "create"
+        model: "career_transition_checklist"
+        save_as: "checklist"
+        as_user: "base.user_admin"
+        values:
+          career_transition_id: "EVAL: registry['career_transition'].id"
+          type_id: "EVAL: registry['checklist_type'].id"
+          operating_unit_id: "EVAL: registry['ou'].id"
+
+      - step: "Assert operating_unit_id is set"
+        action: "assert"
+        target: "checklist"
+        asserts:
+          operating_unit_id:
+            type: "value"
+            operator: "is_truthy"
