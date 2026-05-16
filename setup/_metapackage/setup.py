@@ -9,6 +9,7 @@ setuptools.setup(
     version=version,
     install_requires=[
         'odoo14-addon-ssi_career_transition_checklist',
+        'odoo14-addon-ssi_career_transition_checklist_operating_unit',
     ],
     classifiers=[
         'Programming Language :: Python',
