@@ -22,6 +22,7 @@ Available addons
 addon | version | maintainers | summary
 --- | --- | --- | ---
 [ssi_career_transition_checklist](ssi_career_transition_checklist/) | 14.0.1.0.0 |  | Career Transition Checklist
+[ssi_career_transition_checklist_documenso_signing](ssi_career_transition_checklist_documenso_signing/) | 14.0.1.1.0 |  | Career Transition Checklist - Documenso Signing Integration
 [ssi_career_transition_checklist_operating_unit](ssi_career_transition_checklist_operating_unit/) | 14.0.1.0.0 |  | Career Transition Checklist + Operating Unit
 
 [//]: # (end addons)
